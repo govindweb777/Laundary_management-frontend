@@ -7,8 +7,9 @@ export function OTPVerificationPage() {
     const [otp, setOtp] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
-  const email = location.state?.email;
-  
+    const email = location.state?.email;
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
+
     const verifyOTP = async (e) => {
       e.preventDefault();
       if (!email) {
@@ -18,7 +19,7 @@ export function OTPVerificationPage() {
       }
   
       try {
-        await axios.post("http://localhost:5000/api/auth/otp-verification", { email, otp });
+        await axios.post(`${BASE_URL}api/auth/otp-verification`, { email, otp });
         navigate("/login");
       } catch (error) {
         console.log(error);
