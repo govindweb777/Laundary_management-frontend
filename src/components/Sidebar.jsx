@@ -41,7 +41,7 @@ export default function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 z-40 w-64 lg:w-[240px] h-[960px] lg:h-screen  pt-6 bg-gray-50 border-r border-gray-200 transition-transform font-poppins 
+        className={`fixed top-0 left-0 z-40 w-64 lg:w-[240px] h-full lg:h-screen  pt-6 bg-gray-50 border-r border-gray-200 transition-transform font-poppins 
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
       >
         {/* Sidebar Header */}
