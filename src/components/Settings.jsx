@@ -1,92 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import { toast } from "react-toastify";
-
-// const Settings = () => {
-//   const [user, setUser] = useState({ fullName: "", email: "" });
-//   const [currentPassword, setCurrentPassword] = useState("");
-//   const [newPassword, setNewPassword] = useState("");
-//   const token = localStorage.getItem("token"); // Fetch JWT from localStorage
-//   const BASE_URL = import.meta.env.VITE_BASE_URL; // Ensure .env file has correct value
-
-//   useEffect(() => {
-//     const fetchUser = async () => {
-//       if (!token) return; // Prevent API call if token is missing
-
-//       try {
-//         const response = await axios.get(`${BASE_URL}api/auth/user/profile`, {
-//           headers: { Authorization: `Bearer ${token}` },
-//         });
-//         setUser(response.data);
-//       } catch (error) {
-//         toast.error(error.response?.data?.msg || "Failed to fetch user details");
-//       }
-//     };
-
-//     fetchUser();
-//   }, [token]); 
-
-//   const handlePasswordChange = async (e) => {
-//     e.preventDefault();
-//     try {
-//       await axios.post(
-//         `${BASE_URL}api/auth/change-password`,
-//         { email: user?.email, currentPassword, newPassword },
-//         { headers: { Authorization: `Bearer ${token}` } } // ✅ Fixed missing headers
-//       );
-//       toast.success("Password changed successfully!");
-//       setCurrentPassword("");
-//       setNewPassword("");
-//     } catch (error) {
-//       toast.error(error.response?.data?.msg || "Failed to change password");
-//     }
-//   };
-
-//   return (
-//     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
-//       <h2 className="text-xl font-semibold mb-4">User Settings</h2>
-//       <div className="mb-4">
-//         <label className="block text-gray-700 font-medium">Full Name</label>
-//         <input type="text" value={user?.fullName || ""} disabled className="w-full p-2 border rounded" />
-//       </div>
-//       <div className="mb-4">
-//         <label className="block text-gray-700 font-medium">Email</label>
-//         <input type="text" value={user?.email || ""} disabled className="w-full p-2 border rounded" />
-//       </div>
-
-//       <h3 className="text-lg font-semibold mt-6">Change Password</h3>
-//       <form onSubmit={handlePasswordChange} className="mt-4">
-//         <div className="mb-4">
-//           <label className="block text-gray-700 font-medium">Current Password</label>
-//           <input
-//             type="password"
-//             className="w-full p-2 border rounded"
-//             value={currentPassword}
-//             onChange={(e) => setCurrentPassword(e.target.value)}
-//             required
-//           />
-//         </div>
-//         <div className="mb-4">
-//           <label className="block text-gray-700 font-medium">New Password</label>
-//           <input
-//             type="password"
-//             className="w-full p-2 border rounded"
-//             value={newPassword}
-//             onChange={(e) => setNewPassword(e.target.value)}
-//             required
-//           />
-//         </div>
-//         <button type="submit" className="w-full bg-blue-500 text-white py-2 rounded">
-//           Change Password
-//         </button>
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default Settings;
-
-
 import React, { useEffect, useState } from "react";
 import { Eye } from "lucide-react";
 import axios from "axios";
@@ -275,7 +186,7 @@ const Settings = () => {
                 type={showCurrentPassword ? "text" : "password"}
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                className="w-full p-3 bg-white text-white rounded-md border border-gray-700 pr-10"
+                className="w-full p-3 bg-white text-black rounded-md border border-gray-700 pr-10"
                 placeholder="Enter Current Password"
               />
               <button
