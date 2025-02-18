@@ -1,50 +1,129 @@
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
-import { NavLink } from "react-router-dom";
+import { FaEye, FaTimes } from "react-icons/fa";
 
-export default function InventryList() {
+export default function CustomerList() {
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({
+    inventoryName: "",
+    batchNumber: "",
+    priceInventory: "",
+    GSTNumber: "",
+    weight: "",
+    quantity: "",
+    remarks: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
   const categories = new Array(9).fill({
     category: "Bed Sheet",
-    stock: "Bed Sheet",
+    stockAvailabe: "",
     amount: "INR 45,000",
   });
 
   return (
-    <div className="max-w-5xl mx-auto p-6">
-      {/* Header Section */}
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg font-semibold font-poppins">Inventry</h2>
-        <NavLink to="/new-inventory">
-          <button className="flex items-center gap-2 px-4 py-2 bg-primary text-black rounded-lg hover:bg-secondary">
-            <svg width="187" height="32" viewBox="0 0 187 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M26.1875 6.1625C25.825 5.6375 25.3625 5.175 24.8375 4.8125C23.65 3.95 22.1 3.5 20.2375 3.5H9.7625C9.5125 3.5 9.2625 3.5125 9.025 3.5375C4.925 3.8 2.5 6.4625 2.5 10.7625V21.2375C2.5 23.1 2.95 24.65 3.8125 25.8375C4.175 26.3625 4.6375 26.825 5.1625 27.1875C6.1875 27.9375 7.4875 28.375 9.025 28.475C9.2625 28.4875 9.5125 28.5 9.7625 28.5H20.2375C24.7875 28.5 27.5 25.7875 27.5 21.2375V10.7625C27.5 8.9 27.05 7.35 26.1875 6.1625ZM10.575 14.35L9.9625 13.7125C9.6375 13.3875 9.375 12.8 9.375 12.4V10.9C9.375 10.1125 9.9625 9.525 10.6875 9.525H13.3625C13.875 9.525 14.1875 10.0875 13.9125 10.525L11.6 14.25C11.375 14.6125 10.8625 14.6625 10.575 14.35ZM20.625 12.275C20.625 12.8 20.3 13.45 19.975 13.775L17.1625 16.2625C16.775 16.5875 16.5125 17.2375 16.5125 17.7625V20.575C16.5125 20.9625 16.25 21.4875 15.925 21.6875L15 22.275C14.15 22.8 12.975 22.2125 12.975 21.1625V17.7C12.975 17.2375 12.7125 16.65 12.45 16.325L12.15 16C11.95 15.7875 11.9125 15.4625 12.0625 15.2L15.4125 9.825C15.5375 9.6375 15.7375 9.5125 15.9625 9.5125H19.3125C20.0375 9.5125 20.625 10.1 20.625 10.825V12.275Z" fill="#5A6ACF" />
-              <circle cx="69" cy="16" r="16" fill="#FFE6CC" />
-              <path d="M68 17H62V15H68V9H70V15H76V17H70V23H68V17Z" fill="#5A6ACF" />
-              <path d="M102.868 19.14H99.22L98.548 21H97.396L100.42 12.684H101.68L104.692 21H103.54L102.868 19.14ZM102.556 18.252L101.044 14.028L99.532 18.252H102.556ZM106.102 17.688C106.102 17.016 106.238 16.428 106.51 15.924C106.782 15.412 107.154 15.016 107.626 14.736C108.106 14.456 108.642 14.316 109.234 14.316C109.746 14.316 110.222 14.436 110.662 14.676C111.102 14.908 111.438 15.216 111.67 15.6V12.12H112.774V21H111.67V19.764C111.454 20.156 111.134 20.48 110.71 20.736C110.286 20.984 109.79 21.108 109.222 21.108C108.638 21.108 108.106 20.964 107.626 20.676C107.154 20.388 106.782 19.984 106.51 19.464C106.238 18.944 106.102 18.352 106.102 17.688ZM111.67 17.7C111.67 17.204 111.57 16.772 111.37 16.404C111.17 16.036 110.898 15.756 110.554 15.564C110.218 15.364 109.846 15.264 109.438 15.264C109.03 15.264 108.658 15.36 108.322 15.552C107.986 15.744 107.718 16.024 107.518 16.392C107.318 16.76 107.218 17.192 107.218 17.688C107.218 18.192 107.318 18.632 107.518 19.008C107.718 19.376 107.986 19.66 108.322 19.86C108.658 20.052 109.03 20.148 109.438 20.148C109.846 20.148 110.218 20.052 110.554 19.86C110.898 19.66 111.17 19.376 111.37 19.008C111.57 18.632 111.67 18.196 111.67 17.7ZM114.711 17.688C114.711 17.016 114.847 16.428 115.119 15.924C115.391 15.412 115.763 15.016 116.235 14.736C116.715 14.456 117.251 14.316 117.843 14.316C118.355 14.316 118.831 14.436 119.271 14.676C119.711 14.908 120.047 15.216 120.279 15.6V12.12H121.383V21H120.279V19.764C120.063 20.156 119.743 20.48 119.319 20.736C118.895 20.984 118.399 21.108 117.831 21.108C117.247 21.108 116.715 20.964 116.235 20.676C115.763 20.388 115.391 19.984 115.119 19.464C114.847 18.944 114.711 18.352 114.711 17.688ZM120.279 17.7C120.279 17.204 120.179 16.772 119.979 16.404C119.779 16.036 119.507 15.756 119.163 15.564C118.827 15.364 118.455 15.264 118.047 15.264C117.639 15.264 117.267 15.36 116.931 15.552C116.595 15.744 116.327 16.024 116.127 16.392C115.927 16.76 115.827 17.192 115.827 17.688C115.827 18.192 115.927 18.632 116.127 19.008C116.327 19.376 116.595 19.66 116.931 19.86C117.267 20.052 117.639 20.148 118.047 20.148C118.455 20.148 118.827 20.052 119.163 19.86C119.507 19.66 119.779 19.376 119.979 19.008C120.179 18.632 120.279 18.196 120.279 17.7ZM128.52 12.636V21H127.428V12.636H128.52ZM134.085 14.304C134.885 14.304 135.533 14.548 136.029 15.036C136.525 15.516 136.773 16.212 136.773 17.124V21H135.693V17.28C135.693 16.624 135.529 16.124 135.201 15.78C134.873 15.428 134.425 15.252 133.857 15.252C133.281 15.252 132.821 15.432 132.477 15.792C132.141 16.152 131.973 16.676 131.973 17.364V21H130.881V14.424H131.973V15.36C132.189 15.024 132.481 14.764 132.849 14.58C133.225 14.396 133.637 14.304 134.085 14.304ZM141.505 19.992L143.545 14.424H144.709L142.129 21H140.857L138.277 14.424H139.453L141.505 19.992ZM152.283 17.46C152.283 17.668 152.271 17.888 152.247 18.12H146.991C147.031 18.768 147.251 19.276 147.651 19.644C148.059 20.004 148.551 20.184 149.127 20.184C149.599 20.184 149.991 20.076 150.303 19.86C150.623 19.636 150.847 19.34 150.975 18.972H152.151C151.975 19.604 151.623 20.12 151.095 20.52C150.567 20.912 149.911 21.108 149.127 21.108C148.503 21.108 147.943 20.968 147.447 20.688C146.959 20.408 146.575 20.012 146.295 19.5C146.015 18.98 145.875 18.38 145.875 17.7C145.875 17.02 146.011 16.424 146.283 15.912C146.555 15.4 146.935 15.008 147.423 14.736C147.919 14.456 148.487 14.316 149.127 14.316C149.751 14.316 150.303 14.452 150.783 14.724C151.263 14.996 151.631 15.372 151.887 15.852C152.151 16.324 152.283 16.86 152.283 17.46ZM151.155 17.232C151.155 16.816 151.063 16.46 150.879 16.164C150.695 15.86 150.443 15.632 150.123 15.48C149.811 15.32 149.463 15.24 149.079 15.24C148.527 15.24 148.055 15.416 147.663 15.768C147.279 16.12 147.059 16.608 147.003 17.232H151.155ZM157.429 14.304C158.229 14.304 158.877 14.548 159.373 15.036C159.869 15.516 160.117 16.212 160.117 17.124V21H159.037V17.28C159.037 16.624 158.873 16.124 158.545 15.78C158.217 15.428 157.769 15.252 157.201 15.252C156.625 15.252 156.165 15.432 155.821 15.792C155.485 16.152 155.317 16.676 155.317 17.364V21H154.225V14.424H155.317V15.36C155.533 15.024 155.825 14.764 156.193 14.58C156.569 14.396 156.981 14.304 157.429 14.304ZM163.733 15.324V19.2C163.733 19.52 163.801 19.748 163.937 19.884C164.073 20.012 164.309 20.076 164.645 20.076H165.449V21H164.465C163.857 21 163.401 20.86 163.097 20.58C162.793 20.3 162.641 19.84 162.641 19.2V15.324H161.789V14.424H162.641V12.768H163.733V14.424H165.449V15.324H163.733ZM170.14 21.108C169.524 21.108 168.964 20.968 168.46 20.688C167.964 20.408 167.572 20.012 167.284 19.5C167.004 18.98 166.864 18.38 166.864 17.7C166.864 17.028 167.008 16.436 167.296 15.924C167.592 15.404 167.992 15.008 168.496 14.736C169 14.456 169.564 14.316 170.188 14.316C170.812 14.316 171.376 14.456 171.88 14.736C172.384 15.008 172.78 15.4 173.068 15.912C173.364 16.424 173.512 17.02 173.512 17.7C173.512 18.38 173.36 18.98 173.056 19.5C172.76 20.012 172.356 20.408 171.844 20.688C171.332 20.968 170.764 21.108 170.14 21.108ZM170.14 20.148C170.532 20.148 170.9 20.056 171.244 19.872C171.588 19.688 171.864 19.412 172.072 19.044C172.288 18.676 172.396 18.228 172.396 17.7C172.396 17.172 172.292 16.724 172.084 16.356C171.876 15.988 171.604 15.716 171.268 15.54C170.932 15.356 170.568 15.264 170.176 15.264C169.776 15.264 169.408 15.356 169.072 15.54C168.744 15.716 168.48 15.988 168.28 16.356C168.08 16.724 167.98 17.172 167.98 17.7C167.98 18.236 168.076 18.688 168.268 19.056C168.468 19.424 168.732 19.7 169.06 19.884C169.388 20.06 169.748 20.148 170.14 20.148ZM176.539 15.492C176.731 15.116 177.003 14.824 177.355 14.616C177.715 14.408 178.151 14.304 178.663 14.304V15.432H178.375C177.151 15.432 176.539 16.096 176.539 17.424V21H175.447V14.424H176.539V15.492ZM186.088 14.424L182.128 24.096H181L182.296 20.928L179.644 14.424H180.856L182.92 19.752L184.96 14.424H186.088Z" fill="#1F384C" />
+    <div className="relative max-w-5xl mx-auto p-6">
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-start pt-10 z-10 mt-11 ml-56">
+          <div className="max-w-3xl p-6 rounded-lg font-poppins bg-white z-30 relative w-full mx-4 shadow-lg">
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
+              onClick={() => setShowModal(false)}
+            >
+              <FaTimes className="w-5 h-5" />
+            </button>
+
+            <h2 className="text-lg font-semibold">New Inventory</h2>
+            <p className="text-gray-500 text-sm">List of people whose orders are there</p>
+
+            <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="font-semibold text-[#07187B]">Inventory Name</label>
+                <input type="text" name="inventoryName" placeholder="Enter Inventory Name" value={formData.inventoryName} onChange={handleChange} className="w-full p-2 border rounded-lg" />
+              </div>
+              <div>
+                <label className="font-semibold text-[#07187B]">Batch Number</label>
+                <input type="text" name="batchNumber" placeholder="Enter Batch Number" value={formData.batchNumber} onChange={handleChange} className="w-full p-2 border rounded-lg" />
+              </div>
+              <div>
+                <label className="font-semibold text-[#07187B]">Price of the Inventory</label>
+                <input type="text" name="priceInventory" placeholder="Enter Price of the Inventory" value={formData.priceInventory} onChange={handleChange} className="w-full p-2 border rounded-lg" />
+              </div>
+              <div>
+                <label className="font-semibold text-[#07187B]">GST Number</label>
+                <input type="text" name="GSTNumber" placeholder="Enter Address" value={formData.GSTNumber} onChange={handleChange} className="w-full p-2 border rounded-lg" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+              
+              <div>
+                <label className="font-semibold text-[#07187B]">Weight</label>
+                <select name="weight" value={formData.weight} onChange={handleChange} className="w-full p-2 border rounded-lg">
+                  <option>Enter Weight</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-semibold text-[#07187B]">Quantity</label>
+                <select name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-2 border rounded-lg">
+                  <option>Enter Quantity</option>
+                </select>
+              </div>
+              <button className="bg-[#A6ABC8] text-[#333333] px-4 py-2 rounded-lg font-bold w-1/3">Add</button>
+            </div>
+
+            <div className="mt-4">
+              <label className="font-semibold text-[#07187B]">Remarks</label>
+              <textarea name="remarks" placeholder="Enter a description..." value={formData.remarks} onChange={handleChange} className="w-full h-36 p-2 border rounded-lg" />
+            </div>
+
+            <div className="flex justify-between mt-4">
+              <div className="flex"></div>
+              <button className="bg-[#5A6ACF] text-white px-4 py-2 rounded-lg font-bold w-1/3 " onClick={() => setShowModal(false)}>Done</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className={`relative z-0 ${showModal ? "blur-md" : ""}`}>
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="text-lg font-poppins font-semibold text-[18px] leading-[20px] tracking-[0.5px]">Inventory</h2>
+          <div className="flex gap-3">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+              
+              <path d="M26.1875 5.1625C25.825 4.6375 25.3625 4.175 24.8375 3.8125C23.65 2.95 22.1 2.5 20.2375 2.5H9.7625C9.5125 2.5 9.2625 2.5125 9.025 2.5375C4.925 2.8 2.5 5.4625 2.5 9.7625V20.2375C2.5 22.1 2.95 23.65 3.8125 24.8375C4.175 25.3625 4.6375 25.825 5.1625 26.1875C6.1875 26.9375 7.4875 27.375 9.025 27.475C9.2625 27.4875 9.5125 27.5 9.7625 27.5H20.2375C24.7875 27.5 27.5 24.7875 27.5 20.2375V9.7625C27.5 7.9 27.05 6.35 26.1875 5.1625ZM10.575 13.35L9.9625 12.7125C9.6375 12.3875 9.375 11.8 9.375 11.4V9.9C9.375 9.1125 9.9625 8.525 10.6875 8.525H13.3625C13.875 8.525 14.1875 9.0875 13.9125 9.525L11.6 13.25C11.375 13.6125 10.8625 13.6625 10.575 13.35ZM20.625 11.275C20.625 11.8 20.3 12.45 19.975 12.775L17.1625 15.2625C16.775 15.5875 16.5125 16.2375 16.5125 16.7625V19.575C16.5125 19.9625 16.25 20.4875 15.925 20.6875L15 21.275C14.15 21.8 12.975 21.2125 12.975 20.1625V16.7C12.975 16.2375 12.7125 15.65 12.45 15.325L12.15 15C11.95 14.7875 11.9125 14.4625 12.0625 14.2L15.4125 8.825C15.5375 8.6375 15.7375 8.5125 15.9625 8.5125H19.3125C20.0375 8.5125 20.625 9.1 20.625 9.825V11.275Z" fill="#5A6ACF" />
             </svg>
 
-            {/* <PlusIcon className="w-6 h-6 text-[#5A6ACF] bg-[#FFE6CC] rounded-full p-1" />
-            Add Inventory */}
-          </button>
-        </NavLink>
-      </div>
+            <svg width="24" height="29" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M5 22C4.45 22 3.97917 21.8042 3.5875 21.4125C3.19583 21.0208 3 20.55 3 20V6C3 5.45 3.19583 4.97917 3.5875 4.5875C3.97917 4.19583 4.45 4 5 4H6V2H8V4H16V2H18V4H19C19.55 4 20.0208 4.19583 20.4125 4.5875C20.8042 4.97917 21 5.45 21 6V20C21 20.55 20.8042 21.0208 20.4125 21.4125C20.0208 21.8042 19.55 22 19 22H5ZM5 20H19V10H5V20ZM5 8H19V6H5V8ZM12 14C11.7167 14 11.4792 13.9042 11.2875 13.7125C11.0958 13.5208 11 13.2833 11 13C11 12.7167 11.0958 12.4792 11.2875 12.2875C11.4792 12.0958 11.7167 12 12 12C12.2833 12 12.5208 12.0958 12.7125 12.2875C12.9042 12.4792 13 12.7167 13 13C13 13.2833 12.9042 13.5208 12.7125 13.7125C12.5208 13.9042 12.2833 14 12 14ZM8 14C7.71667 14 7.47917 13.9042 7.2875 13.7125C7.09583 13.5208 7 13.2833 7 13C7 12.7167 7.09583 12.4792 7.2875 12.2875C7.47917 12.0958 7.71667 12 8 12C8.28333 12 8.52083 12.0958 8.7125 12.2875C8.90417 12.4792 9 12.7167 9 13C9 13.2833 8.90417 13.5208 8.7125 13.7125C8.52083 13.9042 8.28333 14 8 14ZM16 14C15.7167 14 15.4792 13.9042 15.2875 13.7125C15.0958 13.5208 15 13.2833 15 13C15 12.7167 15.0958 12.4792 15.2875 12.2875C15.4792 12.0958 15.7167 12 16 12C16.2833 12 16.5208 12.0958 16.7125 12.2875C16.9042 12.4792 17 12.7167 17 13C17 13.2833 16.9042 13.5208 16.7125 13.7125C16.5208 13.9042 16.2833 14 16 14ZM12 18C11.7167 18 11.4792 17.9042 11.2875 17.7125C11.0958 17.5208 11 17.2833 11 17C11 16.7167 11.0958 16.4792 11.2875 16.2875C11.4792 16.0958 11.7167 16 12 16C12.2833 16 12.5208 16.0958 12.7125 16.2875C12.9042 16.4792 13 16.7167 13 17C13 17.2833 12.9042 17.5208 12.7125 17.7125C12.5208 17.9042 12.2833 18 12 18ZM8 18C7.71667 18 7.47917 17.9042 7.2875 17.7125C7.09583 17.5208 7 17.2833 7 17C7 16.7167 7.09583 16.4792 7.2875 16.2875C7.47917 16.0958 7.71667 16 8 16C8.28333 16 8.52083 16.0958 8.7125 16.2875C8.90417 16.4792 9 16.7167 9 17C9 17.2833 8.90417 17.5208 8.7125 17.7125C8.52083 17.9042 8.28333 18 8 18ZM16 18C15.7167 18 15.4792 17.9042 15.2875 17.7125C15.0958 17.5208 15 17.2833 15 17C15 16.7167 15.0958 16.4792 15.2875 16.2875C15.4792 16.0958 15.7167 16 16 16C16.2833 16 16.5208 16.0958 16.7125 16.2875C16.9042 16.4792 17 16.7167 17 17C17 17.2833 16.9042 17.5208 16.7125 17.7125C16.5208 17.9042 16.2833 18 16 18Z" fill="#5A6ACF" />
+            </svg>
 
-      {/* Subheading */}
-      <p className="text-gray-500 text-sm mb-4 font-poppins">
-        List of people whose orders are there
-      </p>
+            <button className="flex items-center gap-3 bg-primary text-black rounded-lg hover:bg-secondary" onClick={() => setShowModal(true)}>
+              <PlusIcon className="w-7 h-7 text-[#5A6ACF] bg-[#FFE6CC] rounded-full p-1" strokeWidth={2} />
+              <span className="font-poppins text-sm font-light">Add Inventory</span>
+            </button>
+            
+          </div>
 
-      {/* Table Section */}
-      <div className="mt-4 p-4">
+
+        </div>
+        
+        
+        <p className="text-gray-500 text-sm mb-4 font-poppins">List of people whose orders are there</p>
+        <div className="mt-4 p-4 h-[560px] w-[970px]">
         <table className="w-full">
           {/* Table Header */}
           <thead>
-            <tr className="text-left text-gray-60 ">
-              <th className="p-3 text-center font-poppins">Sr.No</th>
-              <th className="p-3 text-center font-poppins">Category</th>
-              <th className="p-3 text-center font-poppins">Quantity</th>
-              <th className="p-3 text-center font-poppins">Stock Available</th>
-              <th className="p-3 text-center font-poppins">Action</th>
+            <tr className="text-left text-gray-60">
+              <th className="p-3 text-center">Sr.No</th>
+              <th className="p-3 text-center">Category</th>
+              <th className="p-3 text-center">Stock Available</th>
+              <th className="p-3 text-center">Amount</th>
+              <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
 
@@ -52,12 +131,12 @@ export default function InventryList() {
           <tbody>
             {categories.map((cat, index) => (
               <tr key={index} className="text-gray-700">
-                <td className="p-3 text-center font-poppins">{index + 1}.</td>
-                <td className="p-3 text-center font-poppins">{cat.category}</td>
-                <td className="p-2 text-center font-poppins">{index + 1}</td>
-                <td className="p-3 text-center font-poppins">{cat.amount}</td>
+                <td className="p-3 text-center">{index + 1}.</td>
+                <td className="p-3 text-center">{cat.category}</td>
+                <td className="p-2 text-center">{index + 1}</td>
+                <td className="p-3 text-center">{cat.amount}</td>
                 <td className="p-3 flex justify-center gap-3">
-                  <svg width="69" height="24" viewBox="0 0 69 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="69" height="24" viewBox="0 0 69 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5 19H6.425L16.2 9.225L14.775 7.8L5 17.575V19ZM3 21V16.75L16.2 3.575C16.4 3.39167 16.6208 3.25 16.8625 3.15C17.1042 3.05 17.3583 3 17.625 3C17.8917 3 18.15 3.05 18.4 3.15C18.65 3.25 18.8667 3.4 19.05 3.6L20.425 5C20.625 5.18333 20.7708 5.4 20.8625 5.65C20.9542 5.9 21 6.15 21 6.4C21 6.66667 20.9542 6.92083 20.8625 7.1625C20.7708 7.40417 20.625 7.625 20.425 7.825L7.25 21H3ZM15.475 8.525L14.775 7.8L16.2 9.225L15.475 8.525Z" fill="#0A9100" />
                     <path d="M48 21C47.45 21 46.9792 20.8042 46.5875 20.4125C46.1958 20.0208 46 19.55 46 19V6H45V4H50V3H56V4H61V6H60V19C60 19.55 59.8042 20.0208 59.4125 20.4125C59.0208 20.8042 58.55 21 58 21H48ZM58 6H48V19H58V6ZM50 17H52V8H50V17ZM54 17H56V8H54V17Z" fill="#FF0004" />
                   </svg>
@@ -72,6 +151,7 @@ export default function InventryList() {
             ))}
           </tbody>
         </table>
+      </div>
       </div>
     </div>
   );

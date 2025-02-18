@@ -1,19 +1,20 @@
-
-
 import { useEffect, useState } from 'react';
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, Tooltip } from 'recharts';
 import { FiUsers } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import Loader from "./Loader";
 
 function Dashboard() {
-  // Sample data for charts
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if(!token ){
+    if (!token) {
       navigate("/login");
     }
-  }, [])
+    setTimeout(() => setLoading(false), 0); // Simulating loading time
+  }, []);
 
   const revenueData = Array.from({ length: 12 }, (_, i) => ({
     name: `${i + 1}`,
@@ -37,10 +38,12 @@ function Dashboard() {
     { id: 3, name: 'Shivi Mehta', amount: 45000, pieces: 8 },
   ];
 
-  
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658'];
-  
-  
+
+  if (loading) {
+    return <Loader />;
+  }
+
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
