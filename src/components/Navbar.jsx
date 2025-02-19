@@ -101,7 +101,7 @@ export default function Navbar() {
 
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-start pt-10  z-10">
-          <div className="max-w-4xl mt-12 ml-48 h-[580px] p-6 rounded-lg font-poppins bg-white z-30 relative w-full mx-4 shadow-lg">
+          <div className="max-w-4xl mt-6 ml-48 h-[620px] p-6 rounded-lg font-poppins bg-white z-30 relative w-full mx-4 shadow-lg">
             <button
               className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
               onClick={() => setShowModal(false)}
@@ -112,24 +112,50 @@ export default function Navbar() {
             <h2 className="text-lg font-semibold">New Customer</h2>
             <p className="text-gray-500 text-sm">List of people whose orders are there</p>
 
+
             <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-              <input type="text" name="customerName" placeholder="Enter Customer Name" value={formData.customerName} onChange={handleChange} className="w-full p-2 border rounded-lg" />
-              <input type="text" name="contactNumber" placeholder="Enter Contact Number" value={formData.contactNumber} onChange={handleChange} className="w-full p-2 border rounded-lg" />
-              <input type="text" name="address" placeholder="Enter Address" value={formData.address} onChange={handleChange} className="w-full p-2 border rounded-lg" />
-              <select name="laundryCategory" value={formData.laundryCategory} onChange={handleChange} className="w-full p-2 border rounded-lg">
-                <option>Enter Laundry Category</option>
-              </select>
-              <select name="subCategory" value={formData.subCategory} onChange={handleChange} className="w-full p-2 border rounded-lg">
-                <option>Enter Sub Category</option>
-              </select>
-              <select name="weight" value={formData.weight} onChange={handleChange} className="w-full p-2 border rounded-lg">
-                <option>Enter Weight</option>
-              </select>
-              <select name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-2 border rounded-lg">
-                <option>Enter Quantity</option>
-              </select>
+              <div>
+                <label className="font-semibold text-[#07187B]">Customer Name</label>
+                <input type="text" name="customerName" placeholder="Enter Customer Name" value={formData.customerName} onChange={handleChange} className="w-full p-2 border rounded-lg" />
+              </div>
+              <div>
+                <label className="font-semibold text-[#07187B]">Contact Number</label>
+                <input type="text" name="contactNumber" placeholder="Enter Contact Number" value={formData.contactNumber} onChange={handleChange} className="w-full p-2 border rounded-lg" />
+              </div>
+              <div>
+                <label className="font-semibold text-[#07187B]">Address</label>
+                <input type="text" name="address" placeholder="Enter Address" value={formData.address} onChange={handleChange} className="w-full p-2 border rounded-lg" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+              <div>
+                <label className="font-semibold text-[#07187B]">Laundry Category</label>
+                <select name="laundryCategory" value={formData.laundryCategory} onChange={handleChange} className="w-full p-2 border rounded-lg">
+                  <option>Enter Laundry Category</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-semibold text-[#07187B]">Sub Category</label>
+                <select name="subCategory" value={formData.subCategory} onChange={handleChange} className="w-full p-2 border rounded-lg">
+                  <option>Enter Sub Category</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-semibold text-[#07187B]">Weight</label>
+                <select name="weight" value={formData.weight} onChange={handleChange} className="w-full p-2 border rounded-lg">
+                  <option>Enter Weight</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-semibold text-[#07187B]">Quantity</label>
+                <select name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-2 border rounded-lg">
+                  <option>Enter Quantity</option>
+                </select>
+              </div>
               <button className="bg-[#A6ABC8] text-[#333333] px-4 py-2 rounded-lg font-bold w-1/3">Add</button>
             </div>
+
 
             <textarea name="remarks" placeholder="Enter a description..." value={formData.remarks} onChange={handleChange} className="w-full h-15 p-2 border rounded-lg mt-4" />
 

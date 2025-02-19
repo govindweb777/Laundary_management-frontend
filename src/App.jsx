@@ -16,6 +16,7 @@ import Loader from './components/Loader';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Settings from './components/Settings';
+import Notification from './components/Notification';
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
                 <Sidebar />
                 <main className="lg:ml-24 pt-20">
                   <Routes>
+
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/customers" element={<CustomerList />} />
                     <Route path="/laundary-categories" element={<LaundryCategoryList />} />
@@ -47,6 +49,7 @@ function App() {
                     <Route path="/accounts" element={<div className="p-4">Accounts Content</div>} />
                     <Route path="/reports" element={<Reports />} />
                     <Route path="/settings" element={<Settings/>} />
+                    <Route path="/notification" element={<Notification />} />
                   </Routes>
                 </main>
               </div>
