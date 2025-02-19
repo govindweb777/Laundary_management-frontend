@@ -96,7 +96,7 @@ const Settings = () => {
       {/* Profile Picture Section */}
       <div className="bg-gray-300 rounded-lg p-6">
         <div className="flex items-center space-x-4">
-          <div className="w-16 h-16 bg-[#5A6ACF] rounded-full flex items-center justify-center text-black text-2xl">
+          <div className="w-16 h-16 bg-[#5A6ACF] rounded-full flex items-center justify-center text-white text-2xl">          
             {user.avatar ? (
               <img 
                 src={user.avatar} 
@@ -104,8 +104,9 @@ const Settings = () => {
                 className="w-full h-full rounded-full object-cover"
               />
             ) : (
-              user.firstName?.charAt(0)?.toUpperCase() || "U"
+              user.fullName ? user.fullName.charAt(0).toUpperCase() : '?'
             )}
+
           </div>
           <div className="flex-1">
             <h2 className="text-black text-xl font-semibold mb-2">Change Profile Picture</h2>

@@ -17,7 +17,7 @@ import {
   XMarkIcon
 } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';  // Import toast
+import { toast } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 import Loader from "./Loader"
 
@@ -28,11 +28,9 @@ export default function Sidebar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const logOut = async () => {
-    console.log("clickked");
     setLoading(true);
     try {
       localStorage.removeItem("token");
-      console.log("Removed clickked");
       navigate("/login");
       toast.success("Successfully logged out!");
     } catch (error) {
@@ -67,52 +65,104 @@ export default function Sidebar() {
 
             {/* MENU Section */}
             <div className="text-gray-400 font-semibold mt-4 mb-4 px-3">MENU</div>
-            <NavLink to="/" className={({ isActive }) => `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100' : ''}`}>
-              <ChartBarIcon className="w-5 h-5 text-[#A6ABC8]" />
-              <span className="ml-3 text-[#A6ABC8]">Dashboard</span>
-            </NavLink>
-            <NavLink to="/customers" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 hover:text-[#5A6ACF] ">
-              <ShoppingBagIcon className="w-5 h-5 text-[#AAAFCB] hover:text-[#5A6ACF]" />
-              <span className="ml-3 text-[#AAAFCB] ">Customer List</span>
-            </NavLink>
-            <NavLink to="/laundary-categories" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20">
-              <ClipboardDocumentListIcon className="w-5 h-5 text-[#AAAFCB]" />
-              <span className="ml-3 text-[#AAAFCB]">Laundry Category</span>
-            </NavLink>
-            <NavLink to="/supply-list" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20">
-              <DocumentChartBarIcon className="w-5 h-5 text-[#A6ABC8]" />
-              <span className="ml-3 text-[#A6ABC8]">Supply List</span>
-            </NavLink>
-            <NavLink to="/inventory-list" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20">
-              <UsersIcon className="w-5 h-5 text-[#AAAFCB]" />
-              <span className="ml-3 text-[#AAAFCB]">Inventory</span>
-            </NavLink>
-            <NavLink to="/employees-list" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20">
-              <UserGroupIcon className="w-5 h-5 text-[#AAAFCB]" />
-              <span className="ml-3 text-[#AAAFCB]">Employees</span>
+
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <ChartBarIcon className="w-5 h-5" />
+              <span className="ml-3">Dashboard</span>
             </NavLink>
 
-            {/* OTHERS Section */}
+            <NavLink
+              to="/customers"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <ShoppingBagIcon className="w-5 h-5" />
+              <span className="ml-3">Customer List</span>
+            </NavLink>
+
+            <NavLink
+              to="/laundary-categories"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <ClipboardDocumentListIcon className="w-5 h-5" />
+              <span className="ml-3">Laundry Category</span>
+            </NavLink>
+
+            <NavLink
+              to="/supply-list"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <DocumentChartBarIcon className="w-5 h-5" />
+              <span className="ml-3">Supply List</span>
+            </NavLink>
+
+            <NavLink
+              to="/inventory-list"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <UsersIcon className="w-5 h-5" />
+              <span className="ml-3">Inventory</span>
+            </NavLink>
+
+            <NavLink
+              to="/employees-list"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <UserGroupIcon className="w-5 h-5" />
+              <span className="ml-3">Employees</span>
+            </NavLink>
             <div className="text-gray-400 font-semibold px-3 py-4 ">OTHERS</div>
-            <NavLink to="/billing" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20">
-              <CalculatorIcon className="w-5 h-5 text-gray-500" />
-              <span className="ml-3 text-[#273240]">Billing</span>
+            <NavLink
+              to="/billing"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <CalculatorIcon className="w-5 h-5" />
+              <span className="ml-3">Billing</span>
             </NavLink>
-            <NavLink to="/accounts" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20">
-              <UserIcon className="w-5 h-5 text-gray-500" />
-              <span className="ml-3 text-[#273240]">Accounts</span>
+
+            <NavLink
+              to="/accounts"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : ''}`
+              }>
+              <UserIcon className="w-5 h-5" />
+              <span className="ml-3">Accounts</span>
             </NavLink>
-            <NavLink to="/reports" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20">
-              <DocumentChartBarIcon className="w-5 h-5 text-gray-500" />
-              <span className="ml-3 text-[#273240]">Reports</span>
+
+            <NavLink
+              to="/reports"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <DocumentChartBarIcon className="w-5 h-5" />
+              <span className="ml-3">Reports</span>
             </NavLink>
-            <NavLink to="/settings" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20">
-              <Cog6ToothIcon className="w-5 h-5 text-gray-500" />
-              <span className="ml-3 text-[#273240]">Settings</span>
+
+            <NavLink
+              to="/settings"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <Cog6ToothIcon className="w-5 h-5" />
+              <span className="ml-3">Settings</span>
             </NavLink>
-            <NavLink to="/help" className="flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20">
-              <QuestionMarkCircleIcon className="w-5 h-5 text-gray-500" />
-              <span className="ml-3 text-[#273240]">Help</span>
+
+            <NavLink
+              to="/help"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <QuestionMarkCircleIcon className="w-5 h-5" />
+              <span className="ml-3">Help</span>
             </NavLink>
 
             {/* Logout Button */}
