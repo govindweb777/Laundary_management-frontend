@@ -119,6 +119,16 @@ export default function Sidebar() {
               <UserGroupIcon className="w-5 h-5" />
               <span className="ml-3">Employees</span>
             </NavLink>
+            
+            <NavLink
+              to="/station-list"
+              className={({ isActive }) =>
+                `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
+              }>
+              <UserGroupIcon className="w-5 h-5" />
+              <span className="ml-3">Station List</span>
+            </NavLink>
+
             <div className="text-gray-400 font-semibold px-3 py-4 ">OTHERS</div>
             <NavLink
               to="/billing"
@@ -156,14 +166,14 @@ export default function Sidebar() {
               <span className="ml-3">Settings</span>
             </NavLink>
 
-            <NavLink
+            {/* <NavLink
               to="/help"
               className={({ isActive }) =>
                 `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
               }>
               <QuestionMarkCircleIcon className="w-5 h-5" />
               <span className="ml-3">Help</span>
-            </NavLink>
+            </NavLink> */}
 
             {/* Logout Button */}
             <button className=" flex items-center p-2 text-[#273240] rounded-lg hover:bg-[#707FDD]/20" onClick={logOut}>

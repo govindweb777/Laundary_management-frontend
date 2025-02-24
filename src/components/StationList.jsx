@@ -8,7 +8,7 @@ import axios from "axios";
 
 
 
-export default function CustomerList() {
+export default function StationList() {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const [selectedDate, setSelectedDate] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -172,13 +172,8 @@ export default function CustomerList() {
 
       <div className={`relative z-0 ${showModal ? "blur-md" : ""}`}>
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-poppins font-semibold text-[18px] leading-[20px] tracking-[0.5px]">Laundary Category List</h2>
+          <h2 className="text-lg font-poppins font-semibold text-[18px] leading-[20px] tracking-[0.5px]">Station List</h2>
           <div className="flex gap-3">
-           
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
-
-              <path d="M26.1875 5.1625C25.825 4.6375 25.3625 4.175 24.8375 3.8125C23.65 2.95 22.1 2.5 20.2375 2.5H9.7625C9.5125 2.5 9.2625 2.5125 9.025 2.5375C4.925 2.8 2.5 5.4625 2.5 9.7625V20.2375C2.5 22.1 2.95 23.65 3.8125 24.8375C4.175 25.3625 4.6375 25.825 5.1625 26.1875C6.1875 26.9375 7.4875 27.375 9.025 27.475C9.2625 27.4875 9.5125 27.5 9.7625 27.5H20.2375C24.7875 27.5 27.5 24.7875 27.5 20.2375V9.7625C27.5 7.9 27.05 6.35 26.1875 5.1625ZM10.575 13.35L9.9625 12.7125C9.6375 12.3875 9.375 11.8 9.375 11.4V9.9C9.375 9.1125 9.9625 8.525 10.6875 8.525H13.3625C13.875 8.525 14.1875 9.0875 13.9125 9.525L11.6 13.25C11.375 13.6125 10.8625 13.6625 10.575 13.35ZM20.625 11.275C20.625 11.8 20.3 12.45 19.975 12.775L17.1625 15.2625C16.775 15.5875 16.5125 16.2375 16.5125 16.7625V19.575C16.5125 19.9625 16.25 20.4875 15.925 20.6875L15 21.275C14.15 21.8 12.975 21.2125 12.975 20.1625V16.7C12.975 16.2375 12.7125 15.65 12.45 15.325L12.15 15C11.95 14.7875 11.9125 14.4625 12.0625 14.2L15.4125 8.825C15.5375 8.6375 15.7375 8.5125 15.9625 8.5125H19.3125C20.0375 8.5125 20.625 9.1 20.625 9.825V11.275Z" fill="#5A6ACF" />
-            </svg>
 
             <div className="relative">
               <FaCalendarAlt
@@ -201,7 +196,7 @@ export default function CustomerList() {
 
             <button className="flex items-center gap-3 bg-primary text-black rounded-lg hover:bg-secondary" onClick={() => setShowModal(true)}>
               <PlusIcon className="w-7 h-7 text-[#5A6ACF] bg-[#FFE6CC] rounded-full p-1" strokeWidth={2} />
-              <span className="font-poppins text-sm font-light">New Laundary Category</span>
+              <span className="font-poppins text-sm font-light">Add Station</span>
             </button>
 
           </div>
@@ -210,14 +205,14 @@ export default function CustomerList() {
         </div>
 
 
-        <p className="text-gray-500 text-sm mb-4 font-poppins">List of people whose orders are there</p>
+        <p className="text-gray-500 text-sm mb-4 font-poppins">List of Stations where they are situtated</p>
         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
           <table className="w-full">
             {/* Table Header */}
             <thead>
               <tr className="text-left text-gray-60">
                 <th className="p-3 text-center">Sr.No</th>
-                <th className="p-3 text-center">Category</th>
+                <th className="p-3 text-center"></th>
                 <th className="p-3 text-center">Sub-Category</th>
                 <th className="p-3 text-center">Price</th>
                 <th className="p-3 text-center">Action</th>

@@ -17,6 +17,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Settings from './components/Settings';
 import Notification from './components/Notification';
+import StationList from './components/StationList';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
                     <Route path="/supply-list" element={<SupplyList />} />
                     <Route path="/inventory-list" element={<InventryList />} />
                     <Route path="/employees-list" element={<EmployeeList />} />
+                    <Route path="/station-list" element={<StationList/>} />
                     <Route path="/billing" element={<BillingDashboard />} />
                     <Route path="/accounts" element={<div className="p-4">Accounts Content</div>} />
                     <Route path="/reports" element={<Reports />} />

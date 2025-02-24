@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { FaEye, FaTimes } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FaCalendarAlt } from "react-icons/fa";
+import axios from "axios"
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { TrashIcon} from "@heroicons/react/24/outline";
 
 export default function CustomerList() {
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
   const [selectedDate, setSelectedDate] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -20,24 +25,174 @@ export default function CustomerList() {
     remarks: "",
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const [categories, setCategories] = useState([]);
+  const [subCategories, setSubCategories] = useState([]);
+  const [price, setPrice] = useState("");
+  const [items, setItems] = useState([]);
+  const [totalAmount, setTotalAmount] = useState(0);
+  
+
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    async function fetchOrders() {
+      try {
+        const response = await axios.get(`${BASE_URL}api/orders/orders`);
+        setOrders(response.data);
+      } catch (error) {
+        console.error("Error fetching orders:", error);
+      }
+    }
+    fetchOrders();
+  }, [BASE_URL]);
+
+
+
+  // Fetch categories from backend
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await axios.get(`${BASE_URL}api/laundry/categories`);
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    }
+    fetchCategories();
+  }, []);
+
+  const handleSubmit = async () => {
+
+    if (items.length <= 0) {
+      toast.error("Please add at least one item");
+      return;
+    }
+  
+    if(!formData.customerName || !formData.contactNumber) {
+      toast.error("Customer name and contact number are required");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${BASE_URL}api/orders/create-order`, {
+        customerName: formData.customerName,
+        contactNumber: formData.contactNumber,
+        address: formData.address,
+        items,
+        totalAmount,
+        remarks: formData.remarks,
+      });
+  
+      if (response.status === 201) {
+        toast.success("Order Created Successfully!");
+        setItems([]); 
+        setTotalAmount(0); 
+        setFormData({
+          customerName: "",
+          contactNumber: "",
+          address: "",
+          remarks: "",
+          laundryCategory: "",
+          subCategory: "",
+          weight: "",
+          quantity: "",
+          price: "",
+        });
+      }
+    } catch (error) {
+      console.error("Error creating order:", error);
+      toast.error("Failed to Create Order !");
+  
+      // Reset all fields on failure
+      setItems([]);
+      setTotalAmount(0);
+      setFormData({
+        customerName: "",
+        contactNumber: "",
+        address: "",
+        remarks: "",
+        laundryCategory: "",
+        subCategory: "",
+        weight: "",
+        quantity: "",
+        price: "",
+      });
+    }
   };
 
-  const customers = new Array(8).fill({
-    date: "Dec. 30, 2024",
-    name: "Amit Jain",
-    amount: "INR 45,000",
-    pieces: 4,
-    invoiceId: "#123432",
-    status: "Pending",
-  });
+  const handleEditItem = (index) => {
+    const editedItem = items[index]; // Get the selected item
+    setItemName(editedItem.name);
+    setItemWeight(editedItem.weight);
+    setEditingIndex(index); // Store index for updating the item
+};
+
+const handleDeleteItem = (index) => {
+    const updatedItems = items.filter((_, i) => i !== index);
+    setItems(updatedItems);
+};
+
+  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "laundryCategory") {
+      const selectedCategory = categories.find((cat) => cat.category === value);
+      setSubCategories(selectedCategory ? selectedCategory.items : []);
+      setFormData((prev) => ({ ...prev, subCategory: "", price: "" }));
+    }
+
+    if (name === "subCategory") {
+      const selectedSubCategory = subCategories.find((item) => item.name === value);
+      setPrice(selectedSubCategory ? selectedSubCategory.price : "");
+      setFormData((prev) => ({ ...prev, price: selectedSubCategory ? selectedSubCategory.price : "" })); // ✅ Updated formData
+    }
+
+    if (name === "quantity") {
+      const qty = parseInt(value, 10) || 0;
+      setFormData((prev) => ({ ...prev, quantity: qty }));
+    }
+  };
+
+  const handleAddItem = () => {
+
+    if (!formData.laundryCategory || !formData.subCategory || !formData.quantity || !price) {
+      toast.error("Category required")
+      return;
+    }
+
+    const newItem = {
+      category: formData.laundryCategory,
+      subCategory: formData.subCategory,
+      quantity: formData.quantity,
+      price: price,
+      total: formData.quantity * price,
+    };
+
+    setItems((prevItems) => [...prevItems, newItem]); 
+    setTotalAmount((prevTotal) => prevTotal + newItem.total); 
+
+    setFormData((prev) => ({
+      ...prev, // Preserve existing fields
+      laundryCategory: "",
+      subCategory: "",
+      weight: "",
+      quantity: "",
+      price: "",
+    }));
+    setPrice("");
+
+    console.log("ADDITEM ", formData);
+  };
+
 
   return (
     <div className="relative max-w-5xl mx-auto p-6">
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-start pt-10 z-10 mt-11 ml-56">
-          <div className="max-w-3xl p-6 rounded-lg font-poppins bg-white z-30 relative w-full mx-4 shadow-lg">
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex justify-center items-start pt-10 z-10 mt-11 ml-56 ">
+          <div className="max-w-3xl p-6 rounded-lg font-poppins bg-white z-30 relative w-full mx-4 shadow-lg overflow-y-auto max-h-[635px]">
             {/* Close Button */}
             <button
               className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
@@ -68,29 +223,76 @@ export default function CustomerList() {
               <div>
                 <label className="font-semibold text-[#07187B]">Laundry Category</label>
                 <select name="laundryCategory" value={formData.laundryCategory} onChange={handleChange} className="w-full p-2 border rounded-lg">
-                  <option>Enter Laundry Category</option>
+                  <option>Select Laundry Category</option>
+                  {categories.map((category) => (
+                    <option key={category._id} value={category.category}>
+                      {category.category}
+                    </option>
+                  ))}
                 </select>
               </div>
+
               <div>
                 <label className="font-semibold text-[#07187B]">Sub Category</label>
-                <select name="subCategory" value={formData.subCategory} onChange={handleChange} className="w-full p-2 border rounded-lg">
+                <select name="subCategory" value={formData.subCategory} onChange={handleChange} disabled={!formData.laundryCategory} className="w-full p-2 border rounded-lg">
                   <option>Enter Sub Category</option>
+                  {subCategories.map((item, index) => (
+                    <option key={index} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
-                <label className="font-semibold text-[#07187B]">Weight</label>
-                <select name="weight" value={formData.weight} onChange={handleChange} className="w-full p-2 border rounded-lg">
-                  <option>Enter Weight</option>
-                </select>
+                <label className="font-semibold text-[#07187B]">Price</label>
+                <input
+                  type="text"
+                  name="price"
+                  value={price}
+                  readOnly
+                  className="w-full p-2 border rounded-lg bg-gray-100"
+                />
               </div>
+
+
               <div>
                 <label className="font-semibold text-[#07187B]">Quantity</label>
-                <select name="quantity" value={formData.quantity} onChange={handleChange} className="w-full p-2 border rounded-lg">
-                  <option>Enter Quantity</option>
-                </select>
+                <input type="text" name="quantity" placeholder="Enter Qunatity" value={formData.quantity} onChange={handleChange} className="w-full p-2 border rounded-lg" />
               </div>
-              <button className="bg-[#A6ABC8] text-[#333333] px-4 py-2 rounded-lg font-bold w-1/3">Add</button>
+
+              <button className="bg-[#A6ABC8] text-[#333333] px-2 py-2 rounded-lg font-bold w-1/3 " onClick={handleAddItem}>Add</button>
             </div>
+
+            {items.length > 0 && (
+              <div className="mt-4 overflow-x-auto">
+                <table className="w-full border-collapse border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-100 text-left">
+                      <th className="p-3 border">Laundry Category</th>
+                      <th className="p-3 border">Sub Category</th>
+                      <th className="p-3 border">Quantity</th>
+                      <th className="p-3 border">Subtotal Price</th>
+                      <th className="p-3 border">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {items.map((item, index) => (
+                      <tr key={index} className="border">
+                        <td className="p-3 border">{item.category}</td>
+                        <td className="p-3 border">{item.subCategory}</td>
+                        <td className="p-3 border text-center">{item.quantity}</td>
+                        <td className="p-3 border text-center">₹{item.total}</td>
+                        <td className="p-3 border text-center">
+                          {/* <button className="text-blue-500 mr-2" onClick={() => handleEditItem(index)}>Edit</button> */}
+                          <TrashIcon className="w-5 h-5 text-red-500 cursor-pointer text-center" onClick={() => handleDeleteItem(index)}/>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+
 
             <div className="mt-4">
               <label className="font-semibold text-[#07187B]">Remarks</label>
@@ -98,8 +300,18 @@ export default function CustomerList() {
             </div>
 
             <div className="flex justify-between mt-4">
-              <div className="flex"></div>
-              <button className="bg-[#5A6ACF] text-white px-4 py-2 rounded-lg font-bold w-1/3 " onClick={() => setShowModal(false)}>Done</button>
+              <div className="flex">Total Amount : ₹{totalAmount} </div>
+
+              <button
+                type = "submit"
+                className="bg-[#5A6ACF] text-white px-4 py-2 rounded-lg font-bold w-1/3"
+                onClick={() => {
+                  handleSubmit();
+                  setShowModal(false);
+                }}
+              >
+                Done
+              </button>
             </div>
           </div>
         </div>
@@ -109,10 +321,8 @@ export default function CustomerList() {
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-poppins font-semibold text-[18px] leading-[20px] tracking-[0.5px]">Customer List</h2>
           <div className="flex gap-3">
-            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 
-              <path d="M26.1875 5.1625C25.825 4.6375 25.3625 4.175 24.8375 3.8125C23.65 2.95 22.1 2.5 20.2375 2.5H9.7625C9.5125 2.5 9.2625 2.5125 9.025 2.5375C4.925 2.8 2.5 5.4625 2.5 9.7625V20.2375C2.5 22.1 2.95 23.65 3.8125 24.8375C4.175 25.3625 4.6375 25.825 5.1625 26.1875C6.1875 26.9375 7.4875 27.375 9.025 27.475C9.2625 27.4875 9.5125 27.5 9.7625 27.5H20.2375C24.7875 27.5 27.5 24.7875 27.5 20.2375V9.7625C27.5 7.9 27.05 6.35 26.1875 5.1625ZM10.575 13.35L9.9625 12.7125C9.6375 12.3875 9.375 11.8 9.375 11.4V9.9C9.375 9.1125 9.9625 8.525 10.6875 8.525H13.3625C13.875 8.525 14.1875 9.0875 13.9125 9.525L11.6 13.25C11.375 13.6125 10.8625 13.6625 10.575 13.35ZM20.625 11.275C20.625 11.8 20.3 12.45 19.975 12.775L17.1625 15.2625C16.775 15.5875 16.5125 16.2375 16.5125 16.7625V19.575C16.5125 19.9625 16.25 20.4875 15.925 20.6875L15 21.275C14.15 21.8 12.975 21.2125 12.975 20.1625V16.7C12.975 16.2375 12.7125 15.65 12.45 15.325L12.15 15C11.95 14.7875 11.9125 14.4625 12.0625 14.2L15.4125 8.825C15.5375 8.6375 15.7375 8.5125 15.9625 8.5125H19.3125C20.0375 8.5125 20.625 9.1 20.625 9.825V11.275Z" fill="#5A6ACF" />
-            </svg>
+            {/* show filter here */}
 
             <div className="relative">
               <FaCalendarAlt
@@ -143,33 +353,34 @@ export default function CustomerList() {
         </div>
         <p className="text-gray-500 text-sm mb-4 font-poppins">List of people whose orders are there</p>
         <div className="mt-4 p-4 bg-gray-100 rounded-lg">
+        
+
           <table className="w-full ">
-            <thead className="text-left">
-              <tr className="text-black">
-                <th className="p-3 font-poppins">Date</th>
-                <th className="p-3 font-poppins">Name</th>
-                <th className="p-3 font-poppins">Amount</th>
-                <th className="p-3 font-poppins">Pieces</th>
-                <th className="p-3 font-poppins">Invoice ID</th>
-                <th className="p-3 font-poppins">Status</th>
+            <thead>
+              <tr className="text-left text-gray-60">
+                <th className="p-3 text-center">Date</th>
+                <th className="p-3 text-center">Order ID</th>
+                <th className="p-3 text-center">Customer Name</th>
+                <th className="p-3 text-center">Total Amount</th>
+                <th className="p-3 text-center">Quantity</th>
+                <th className="p-3 text-center">Payment Status</th>
               </tr>
             </thead>
             <tbody>
-              {customers.map((customer, index) => (
-                <tr key={index} className="text-gray-700">
-                  <td className="p-3">{customer.date}</td>
-                  <td className="p-3 flex items-center gap-2">
-                    <img src={`https://i.pravatar.cc/40?img=${index + 1}`} alt="avatar" className="w-8 h-8 rounded-full" />
-                    {customer.name}
-                  </td>
-                  <td className="p-3 font-poppins">{customer.amount}</td>
-                  <td className="p-3 font-poppins">{customer.pieces}</td>
-                  <td className="p-3 font-poppins">{customer.invoiceId}</td>
-                  <td className="p-3 font-poppins">{customer.status}</td>
+              {orders.map((order, index) => (
+                <tr key={index} className="text-center">
+                  <td className="p-3 text-center">{new Date(order.date).toLocaleDateString()}</td>
+                  <td className="p-3 text-center">{order.orderId}</td>
+                  <td className="p-3 text-center">{order.customerName}</td>
+                  <td className="p-3 text-center">₹{order.totalAmount}</td>
+                  <td className="p-3 text-center">{order.items.reduce((sum, item) => sum + item.quantity, 0)}</td>
+                  <td className="p-3 text-center">{order.paymentStatus}</td>
                 </tr>
               ))}
             </tbody>
-          </table>
+
+          </table>          
+
         </div>
       </div>
     </div>
