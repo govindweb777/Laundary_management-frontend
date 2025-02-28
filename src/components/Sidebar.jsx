@@ -26,11 +26,13 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const role = localStorage.getItem("role"); // Retrieve role from localStorage
 
   const logOut = async () => {
     setLoading(true);
     try {
       localStorage.removeItem("token");
+      localStorage.removeItem("role");
       navigate("/login");
       toast.success("Successfully logged out!");
     } catch (error) {
@@ -120,14 +122,29 @@ export default function Sidebar() {
               <span className="ml-3">Employees</span>
             </NavLink>
             
-            <NavLink
+            {/* <NavLink
               to="/station-list"
               className={({ isActive }) =>
                 `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'}`
               }>
               <UserGroupIcon className="w-5 h-5" />
               <span className="ml-3">Station List</span>
-            </NavLink>
+            </NavLink> */}
+
+
+
+{role === "admin" && (
+  <NavLink
+    to="/station-list"
+    className={({ isActive }) =>
+      `flex items-center p-2 rounded-lg hover:bg-[#707FDD]/20 ${
+        isActive ? 'bg-gray-100 text-[#5A6ACF]' : 'text-[#273240]'
+      }`
+    }>
+    <UserGroupIcon className="w-5 h-5" />
+    <span className="ml-3">Station List</span>
+  </NavLink>
+)}
 
             <div className="text-gray-400 font-semibold px-3 py-4 ">OTHERS</div>
             <NavLink

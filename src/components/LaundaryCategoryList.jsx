@@ -1,5 +1,5 @@
 import { useState , useEffect} from "react";
-import { PlusIcon, TrashIcon , PencilSquareIcon } from "@heroicons/react/24/outline";
+import { PlusIcon, TrashIcon , PencilSquareIcon, PencilIcon } from "@heroicons/react/24/outline";
 import { FaEye, FaTimes } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -236,7 +236,8 @@ export default function CustomerList() {
                   <td className="p-3 flex justify-center items-center gap-3">
 
                     <div className="flex gap-2">
-                    <PencilSquareIcon className="w-5 h-5 text-blue-500 cursor-pointer"  onClick={() => handleEditCategory(cat)} />
+                    <PencilIcon className="w-5 h-4.5 text-green-600 hover:text-green-700 cursor-pointer" onClick={() => handleEditCategory(cat)}/>
+                   
                     <TrashIcon className="w-5 h-5 text-red-500 cursor-pointer" onClick={() => handleDeleteCategory(cat._id)} />  
                     </div>
                    

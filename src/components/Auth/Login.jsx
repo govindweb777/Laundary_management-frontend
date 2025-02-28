@@ -20,6 +20,7 @@ export function LoginPage() {
     try {
       const response = await axios.post(`${BASE_URL}api/auth/login`, { email, password });
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.role);
       navigate("/");
       toast.success("Login Successfull!")
     } catch (error) {
@@ -75,10 +76,10 @@ export function LoginPage() {
             </form>
 
 
-            <p className="text-center text-gray-600">
+            {/* <p className="text-center text-gray-600">
               Don't have an account?{' '}
               <a href="/signup" className="text-[#5A6ACF] font-semibold hover:underline">Sign Up</a>
-            </p>
+            </p> */}
           </div>
         )}
     </div>
